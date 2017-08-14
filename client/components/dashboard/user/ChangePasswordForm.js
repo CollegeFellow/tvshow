@@ -1,6 +1,9 @@
 import React from 'react';
 import TextFieldGroup from '../../common/TextFieldGroup';
 
+import { connect } from 'react-redux';
+import { changePassword } from '../../../actions/changePasswordActions';
+
 class ChangePasswordForm extends React.Component {
 
   constructor(props){
@@ -9,7 +12,8 @@ class ChangePasswordForm extends React.Component {
       currentPassword: '',
       newPassword: '',
       isLoading: false,
-      errors: {}
+      errors: {},
+      userId: this.props.user.id
     };
 
     this.onChange = this.onChange.bind(this);
@@ -22,6 +26,20 @@ class ChangePasswordForm extends React.Component {
 
   onSubmit(e){
     e.preventDefault();
+    let ctx = this;
+    this.setState({ isLoading: true, errors: {} });
+    var temp = this.props.changePassword(this.state);
+    console.log('T T T T:', temp);
+    temp.then(
+      (res) => {
+        ctx.setState({ isLoading: false});
+        console.log('Response:', res);
+      },
+      function(err){
+        console.log('Errrrrr: ',err);
+        ctx.setState({ isLoading: false, errors: err.response.data.errors });
+      }
+    );
   }
 
   render(){
@@ -29,7 +47,10 @@ class ChangePasswordForm extends React.Component {
 
     return (
       <form onSubmit={this.onSubmit}>
+        { (errors.form) && <div className='alert alert-danger'>{errors.form}</div> }
+
         <TextFieldGroup
+          type='password'
           field='currentPassword'
           label='Current Password'
           value={this.state.currentPassword}
@@ -38,6 +59,7 @@ class ChangePasswordForm extends React.Component {
         />
 
         <TextFieldGroup
+          type='password'
           field='newPassword'
           label='New Password'
           value={this.state.newPassword}
@@ -54,4 +76,15 @@ class ChangePasswordForm extends React.Component {
   }
 }
 
-export default ChangePasswordForm;
+ChangePasswordForm.propTypes = {
+  changePassword: React.PropTypes.func.isRequired,
+  user: React.PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.authReducer.user
+  }
+}
+
+export default connect(mapStateToProps, { changePassword })(ChangePasswordForm);

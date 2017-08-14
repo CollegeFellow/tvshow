@@ -9,6 +9,7 @@ import webpackConfig from '../webpack.config.dev';
 
 import users from './routes/users';
 import auth from './routes/auth';
+import movies from './routes/movies';
 
 let app = express();
 
@@ -17,6 +18,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+app.use('/api/movies', movies);
 
 const compiler = webpack(webpackConfig);
 

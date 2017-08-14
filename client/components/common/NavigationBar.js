@@ -31,7 +31,7 @@ class NavigationBar extends React.Component {
       <nav className="navbar navbar-default">
         <div className="container-fluid">
           <div className="navbar-header">
-            <Link className="navbar-brand" to="/">TVShow App</Link>
+            <Link className="navbar-brand" to="/">BookMyShow</Link>
           </div>
           <div className="collapse navbar-collapse">
             { isAuthenticated ? userLinks : guestLinks }

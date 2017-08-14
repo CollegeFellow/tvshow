@@ -45,7 +45,7 @@ class SignupForm extends React.Component {
           });
           this.context.router.push('/user/dashboard');
         },
-        (err) => { console.log(err); this.setState({ errors: err.response.data, isLoading: false }); }
+        (err) => { this.setState({ errors: err.response.data, isLoading: false }); }
       );
     }
   }
